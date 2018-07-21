@@ -18,8 +18,8 @@ app.use(function(req, res) {
 });
 
 app.get('/', serveFileHandler(path.join(__dirname, 'static', 'index.html')));
-app.get('/favicon.png', serveFileHandler(path.join(__dirname, 'assets', 'favicon.png')));
+app.get('/favicon.png', serveFileHandler(path.join(__dirname, 'assets', 'static', 'favicon.png')));
 
-app.get('/lib/semantic/semantic.min.css', serveFileHandler(path.join(__dirname, 'build', 'semantic', 'dist', 'semantic.min.css')));
+app.get('/lib/semantic/semantic.min.css', serveFileHandler(path.join(__dirname, 'assets', 'build', 'semantic', 'dist', 'semantic.min.css')));
 
 app.listen(process.env.PORT || 5000);
