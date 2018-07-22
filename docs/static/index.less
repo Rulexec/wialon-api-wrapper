@@ -1,0 +1,33 @@
+.x-root {
+	display: flex;
+	flex-direction: row;
+	min-height: 100vh;
+
+	> .menu {
+		width: 300px;
+		margin: 0;
+		border-radius: 0;
+
+		max-height: 100vh;
+		overflow: auto;
+
+		&.ui.vertical > .item {
+			border-radius: 0;
+		}
+
+		.menu-header-item {
+			img {
+				width: 2.5em;
+				height: 2.5em;
+			}
+
+			b {
+				margin-left: 0.5em;
+			}
+		}
+	}
+
+	> .content {
+		flex-grow: 1;
+	}
+}

@@ -14,6 +14,7 @@ function serveFile(options, req, res) {
 		switch (match[1]) {
 		case 'html': contentType = 'text/html'; break;
 		case 'css': contentType = 'text/css'; break;
+		case 'svg': contentType = 'image/svg+xml'; break;
 		}
 	}
 
