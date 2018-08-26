@@ -1,0 +1,50 @@
+<div class="x-page-content text">
+
+<h1 class="ui dividing header">Wialon API</h1>
+
+<p>Описание сущностей и типов данных, которыми оперирует Wialon API.</p>
+
+<h2 class="ui header">Item</h2>
+
+<p>Основная сущность <b>Wialon API</b> — это <b>Item</b>. Именно с ними работают методы <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/search_item">core/search_item</a>, <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/search_items">core/search_items</a> и <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/update_data_flags">core/update_data_flags</a>.</p>
+
+<p>Каждый <b>Item</b> имеет:</p>
+
+<ul class="x-ul">
+	<li><b>тип</b> (будет рассмотрен далее)</li>
+	<li>уникальный <b>id</b> относительно других <b>Item'ов</b> всей системы, вне зависимости от типа/учётной записи/прочего</li>
+	<li><b>имя</b></li>
+	<li><b>создателя</b> (<b>id</b> пользователя, который создал этот <b>Item</b>)</li>
+	<li><b>учётную запись</b> (<b>id</b> учётной записи, к которой относится этот <b>Item</b>)</li>
+	<li><b>произвольные параметры</b> (неупорядоченный набор строковых ключей-значений)</li>
+</ul>
+
+<p style="color:red;"><b>TODO:</b> проверить, точно ли кроме этих все имеют произвольные поля, картинку, сообщения, guid, если да, то дописать.</p>
+<p style="color:red;"><b>TODO:</b> проверить присутствие единиц измерения у группы объектов, маршрута, ретранслятора.</p>
+<p style="color:red;"><b>TODO:</b> упомянуть фиктивное поле <b>uacl</b>.</p>
+
+<p>Существуют следующие типы:</p>
+
+<p style="color:red;"><b>TODO:</b> написать значения <b>cls</b>.</p>
+<p style="color:red;"><b>TODO:</b> ещё тарифные планы, узнать их тип.</p>
+
+<ul class="x-ul">
+	<li><b>avl_unit</b></li>
+	<li><b>avl_unit_group</b></li>
+	<li><b>user</b></li>
+	<li><b>avl_resource</b></li>
+	<li><b>avl_route</b></li>
+	<li><b>avl_retranslator</b></li>
+</ul>
+
+<p>В зависимости от типа <b>Item</b> содержит различные дополнительные поля. Посмотреть на них можно на странице <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/format/format">Data format</a> официальной документации.</p>
+
+<p>Эти поля делятся на два типа, которые мы будем называть <b>propfield</b> (или просто <b>поле</b>) и <b>propitem</b>.</p>
+
+<p>Обычные <b>поля</b> содержат какое-то одно значение, вроде номера телефона, позиции, статуса подключения, <b>propitem'ы</b> содержат группу дочерних сущностей и рассматриваются в следующем разделе.</p>
+
+<h2>PropItem</h2>
+
+<p>...</p>
+
+</div>
