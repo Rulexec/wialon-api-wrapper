@@ -1,1 +1,33 @@
-42
+<div class="x-page-content text">
+
+<h1 class="ui dividing header">Wialon API Wrapper</h1>
+
+<p><b>Wrapper API</b> — обёртка над <b>Wialon API</b>. Представлена в виде <b>node.js</b> приложения, которое можно скачать с GitHub <a href='https://github.com/Rulexec/wialon-api-wrapper'>Rulexec/wialon-api-wrapper</a>.</p>
+
+<h2 class="ui header">Зачем?</h2>
+
+<p><b>Wialon API</b> временами необоснованно сложен и разработчики, начинающие с ним работать, сталкиваются с одними и теми же проблемами:</p>
+
+<ul class="x-ul">
+	<li>
+		<p>error: 4</p>
+		<p>Помимо обычных ошибок совсем новичков с <a href='https://url.spec.whatwg.org/#urlencoded-serializing'>x-www-form-urlencoded</a> с неэкранированными амперсандами в параметрах и невалидного JSON'а, иногда эта ошибка происходит из-за не всегда очевидных валидаций. Со временем неочевидностей должно стать меньше, постепенно вводятся поля <b>reason</b> с уточнением ошибки.</p>
+	</li>
+	<li>
+		<p>Сложность входных параметров</p>
+		<p>Произвести поиск нужных объектов используя <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/search_items'>core/search_items</a> не такая уж и тривиальная задача. Угадать с первого раза параметры <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/update_data_flags'>core/update_data_flags</a> тоже не всегда получается.</p>
+	</li>
+	<li>
+		<p>Шифрование полей</p>
+		<p>Для экономии трафика практически все поля в итоговом JSON'е названы одной-тремя (иногда даже четырьмя) буквами, можно посмотреть пример <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/format/unit#sensors'>датчика объекта</a>. Без изучения документации часто сложно понять, что есть что.</p>
+	</li>
+	<li>
+		<p>Работа с отчётами</p>
+		<p><a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/report/update_report'>Создать отчёт</a> динамически крайне непросто. Отчёт состоит из таблиц, в которых есть колонки, параметры. Некоторые опции отчёта требуют добавления таблиц с определёнными колонками. Со всем этим очень долго разбираться и куда проще создать нужный отчёт руками, экспортировать, а затем программно изменять какие-то его детали, если требуется выполнять множество похожих отчётов автоматически.</p>
+		<p>Получить результаты из отчёта так же довольно трудозатратно. Сначала выполняется <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/report/exec_report'>core/exec_report</a>, затем есть <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/report/get_result_chart'>report/get_result_chart</a>, <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/report/get_result_map'>report/get_result_map</a>, <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/report/render_json'>report/render_json</a>, <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/report/get_result_subrows'>report/get_result_subrows</a>, <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/report/select_result_rows'>report/select_result_rows</a>, <a href='https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/report/get_result_rows'>report/get_result_rows</a>, от чего разбегаются глаза и в случае какого-то совсем простого отчёта, где нужно взять пару цифр долго разбираться и выполнять несколько запросов как-то не сильно хочется.</p>
+	</li>
+</ul>
+
+Данный проект направлен на то, чтобы упростить использование Wialon API насколько это возможно.
+
+</div>

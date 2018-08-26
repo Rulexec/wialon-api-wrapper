@@ -22,6 +22,7 @@ app.use(function(req, res) {
 	res.status(404).end('404');
 });
 
+app.get('/favicon.ico', function(req, res) { res.status(404).end('404'); });
 app.get('/favicon.png', serveFileHandler(path.join(__dirname, 'assets/static/favicon.png')));
 
 app.get('/lib/less/less.min.js', serveFileHandler(path.join(__dirname, 'build/less/less.min.js')));
@@ -74,19 +75,40 @@ app.get(/^\/(.*)$/, function(req, res, pageSlug) {
 		}
 	}
 
+	// check for page existance
+	let pageContentHtml = templates.get(pageSlug);
+	if (DEBUG) {
+		try {
+			pageContentHtml = fs.readFileSync(
+				path.join(__dirname, 'templates/pages', pageSlug + '.html')
+			).toString('utf-8');
+		} catch (e) {
+			res.status(404).header('Content-Type', 'text/plain').end('404 - DEBUG - ' + pageSlug);
+			return;
+		}
+	}
+
+	if (!pageContentHtml) {
+		res.status(404).header('Content-Type', 'text/plain').end('404 - ' + pageSlug);
+		return;
+	}
+
 	let pageTemplateHtml = pageTemplate;
 	if (DEBUG) pageTemplateHtml = readPageTemplate();
 
+	// process menu items
 	let activeItemRegexp = /\s*{active if page (.+)}([^>]*?){href from if page}/g;
 
 	let html = pageTemplateHtml.replace(activeItemRegexp, function(full, slug, space) {
 		return (slug === pageSlug ? ' active' : '') + space + ('/' + slug);
 	});
 
-	let pageContentHtml = templates.get(pageSlug);
-	if (DEBUG) pageContentHtml = fs.readFileSync(
-		path.join(__dirname, 'templates/pages', pageSlug + '.html')
-	);
+	// temporary disabled menu items
+	let notImplementedMenuItemRegexp = /<a\s*{not implemented yet}\s*(.*?)\s*href=(['"]).*\2\s*(.*?)\s*>(.*?)<\/a>/g;
+
+	html = html.replace(notImplementedMenuItemRegexp, function(full, preHref, _quote, postHref, content) {
+		return '<div ' + preHref + postHref + '><s>' + content + '</s></div>';
+	});
 
 	html = html.replace('{CONTENT}', pageContentHtml);
 

@@ -20,32 +20,34 @@ if (window.history.replaceState && /^[^/]+:\/\/[^/]+\/?$/.test(document.location
 
 <body>
 
-<div class='x-root'>
-	<div class='ui vertical inverted menu'>
-		<div class='item menu-header-item'>
-			<img src='/static/logo.svg'><b>API Wrapper</b>
-		</div>
-
-		<a class='item {active if page what-is-it}' href='{href from if page}'><b>Что это?</b></a>
-
-		<a class='item {active if page getting-started}' href='{href from if page}'><b>Как начать?</b></a>
-
-		<div class='item'><div class='header'>Wialon API</div><div class='menu'>
-			<a class='item {active if page wialon-api/objects}' href='{href from if page}'>Сущности</a>
-			<a class='item {active if page wialon-api/requests}' href='{href from if page}'>Запросы</a>
-			<a class='item {active if page wialon-api/events}' href='{href from if page}'>События</a>
-		</div></div>
-
-		<div class='item'><div class='header'>Wrapper API</div><div class='menu'>
-			<a class='item {active if page wrapper-api/objects}' href='{href from if page}'>Сущности</a>
-			<a class='item {active if page wrapper-api/requests}' href='{href from if page}'>Запросы</a>
-			<a class='item {active if page wrapper-api/events}' href='{href from if page}'>События</a>
-		</div></div>
-
-		<a class='item {active if page examples}' href='{href from if page}'><b>Примеры</b></a>
-
-		<a class='item'><b>Reference</b></a>
+<div class='x-menu ui vertical inverted menu'>
+	<div class='item menu-header-item'>
+		<img src='/static/logo.svg'><b>API Wrapper</b>
 	</div>
+
+	<a class='item {active if page what-is-it}' href='{href from if page}'><b>Что это?</b></a>
+
+	<a class='item {active if page getting-started}' href='{href from if page}'><b>Как начать?</b></a>
+
+	<div class='item'><div class='header'>Wialon API</div><div class='menu'>
+		<a {not implemented yet} class='item {active if page wialon-api/objects}' href='{href from if page}'>Сущности</a>
+		<a {not implemented yet} class='item {active if page wialon-api/requests}' href='{href from if page}'>Запросы</a>
+		<a {not implemented yet} class='item {active if page wialon-api/events}' href='{href from if page}'>События</a>
+	</div></div>
+
+	<div class='item'><div class='header'>Wrapper API</div><div class='menu'>
+		<a {not implemented yet} class='item {active if page wrapper-api/objects}' href='{href from if page}'>Сущности</a>
+		<a {not implemented yet} class='item {active if page wrapper-api/requests}' href='{href from if page}'>Запросы</a>
+		<a {not implemented yet} class='item {active if page wrapper-api/events}' href='{href from if page}'>События</a>
+	</div></div>
+
+	<a {not implemented yet} class='item {active if page examples}' href='{href from if page}'><b>Примеры</b></a>
+
+	<div class='item'><s><b>Reference</b></s></div>
+</div>
+
+<div class='x-root'>
+	<div class='menu'></div>
 	<div class='content'>{CONTENT}</div>
 </div>
 

@@ -9,6 +9,7 @@ module.exports = function(options) {
     var status = byDefault(true, options.status),
         location = byDefault(true, options.location),
         redirect = byDefault(true, options.redirect),
+        header = byDefault(true, options.header),
 
         onEnd = byDefault(true, options.onEnd);
 
@@ -34,6 +35,13 @@ module.exports = function(options) {
 
             return res;
         });
+
+        if (header) {
+            res.header = function(name, value) {
+                res.setHeader(name, value);
+                return res;
+            };
+        }
 
         if (onEnd) {
             var stack = [];
