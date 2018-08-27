@@ -45,6 +45,22 @@
 
 <h2>PropItem</h2>
 
-<p>...</p>
+<p>Поля, содержащиеся в <b>Item'ах</b>, содержащие несколько значений, называются <b>propitem'ами</b>.</p>
+
+<p style="color:red;"><b>TODO:</b> проверить, точно ли кастомные свойства и поля являются propitem'ами.</p>
+
+<p>Примером такого поля являются <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/format/resource#geofences">геозоны</a> у <b>ресурса</b>.</p>
+
+<p>У данных полей есть специальные методы для изменения конкретного элемента, создания нового. Так же у них иногда бывает метод для получения дополнительной информации, у геозон, к примеру, это <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/resource/get_zone_data">resource/get_zone_data</a>. Т.е. если сделать просто <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/search_items">core/search_items</a>, либо <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/update_data_flags">core/update_data_flags</a> с флагом геозон, будет возвращён неполный JSON геозон, там не будет площади/периметра, точек, и других значений, их необходимо получать отдельно.</p>
+
+<p>Кроме того, нет возможности изменить отдельное поле произвольного <b>PropItem'а</b>, требуется записывать весь JSON целиком.</p>
+
+<h2>События изменения полей</h2>
+
+<p>Когда мы делаем <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/update_data_flags">core/update_data_flags</a>, мы подписываемся на изменение данных, которые мы выбрали при помощи флагов.</p>
+
+<p>Эти изменения будут находиться в событиях <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/requests/avl_evts">avl_evts</a>.</p>
+
+<p>Здесь так же проявляется разница между <b>Item'ом</b> и <b>PropItem'ом</b>. У <b>Item'а</b> при изменении полей будут приходить события с только этими новыми полями. В случае <b>PropItem'а</b> есть только уведомление о том, что что-то внутри него изменилось и новый базовый JSON, поэтому, если вам требуется следить за расширенными данными, нужно будет запрашивать их заново и сравнивать.</p>
 
 </div>
