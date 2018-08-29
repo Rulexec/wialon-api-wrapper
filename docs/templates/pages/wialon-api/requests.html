@@ -20,14 +20,14 @@
 
 <p>Пример запроса:</p>
 
-<pre class='x-pre-code'><code>
-POST /wialon/ajax.html HTTP/1.1
+<pre class='x-code-block'>
+POST <span class="highlight">/wialon/ajax.html</span> HTTP/1.1
 Host: hst-api.wialon.com
 Connection: close
-Content-Type: application/x-www-form-urlencoded
+Content-Type: <span class="highlight">application/x-www-form-urlencoded</span>
 Content-Length: 148
 
-svc=core/use_auth_hash&amp;params=%7B%22authHash%22%3A%22XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%22%2C%22operateAs%22%3A%22%22%2C%22checkService%22%3A%22%22%7D
+svc=<span class="highlight">core/use_auth_hash</span>&amp;params=<span class="highlight secondary">%7B%22authHash%22%3A%22XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%22%2C%22operateAs%22%3A%22%22%2C%22checkService%22%3A%22%22%7D</span>
 
 -----
 
@@ -40,6 +40,12 @@ Cache-Control: no-cache
 Server: adf_http_server/4.3.0205
 
 ...JSON...
-</code></pre>
+</pre>
+
+<p>Подсвеченное синим значение это закодированный согласно правилам <a href="https://url.spec.whatwg.org/#urlencoded-serializing">x-www-form-urlencoded</a> JSON:</p>
+
+<pre class='x-code-block'>{"authHash":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","operateAs":"","checkService":""}</pre>
+
+<p>Чтобы попробовать данный запрос нужен <b>authHash</b>, который можно получить <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/login/login">авторизовавшись</a> через <a href="https://hosting.wialon.com/login.html?response_type=hash">login.html</a>, а затем взять значение из URL-параметра <b>access_hash</b>.</p>
 
 </div>

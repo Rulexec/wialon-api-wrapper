@@ -66,8 +66,20 @@ ul.x-ul {
 	}
 }
 
-pre.x-pre-code {
+.x-code-block {
 	white-space: pre-wrap;
 	word-break: break-all;
 	word-wrap: break-word;
+
+	font-family: monospace;
+
+	.highlight {
+		font-weight: bold;
+
+		color: red;
+
+		&.secondary {
+			color: blue;
+		}
+	}
 }
