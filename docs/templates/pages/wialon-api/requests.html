@@ -1,0 +1,45 @@
+<div class="x-page-content text">
+
+<h1 class="ui dividing header">Формат запросов Wialon API</h1>
+
+<h2 class="ui header">ajax.html</h2>
+
+<p>Практически всё взаимодействие с <b>Wialon API</b> происходит при помощи <b>HTTPS</b> endpoint'а <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/reqformat/reqformat">/wialon/ajax.html</a>.
+
+<p>Должен использоваться метод <b>POST</b>, данные тела должны кодироваться в <a href="https://url.spec.whatwg.org/#urlencoded-serializing">application/x-www-form-urlencoded</a> и должен присутствовать соответствующий HTTP-заголовок.</p>
+
+<p>Все данные ожидаются и кодируются в <b>UTF-8</b>, вне зависимости от заголовка <b>Accept-Charset</b>.</p>
+
+<p>Ожидаются три обязательных параметра:</p>
+
+<ul class="x-ul">
+	<li><b>svc</b> — идентификатор вызываемого метода</li>
+	<li><b>params</b> — JSON параметров для метода</li>
+	<li><b>sid</b> — авторизационный идентификатор. Не обязателен для методов авторизации (<a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/token/login">token/login</a>, <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/use_auth_hash">core/use_auth_hash</a>, <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/duplicate">core/duplicate</a>)</li>
+</ul>
+
+<p>Пример запроса:</p>
+
+<pre class='x-pre-code'><code>
+POST /wialon/ajax.html HTTP/1.1
+Host: hst-api.wialon.com
+Connection: close
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 148
+
+svc=core/use_auth_hash&amp;params=%7B%22authHash%22%3A%22XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%22%2C%22operateAs%22%3A%22%22%2C%22checkService%22%3A%22%22%7D
+
+-----
+
+HTTP/1.1 200 OK
+Date: Wed, 29 Aug 2018 15:44:32 GMT
+Content-Type: application/json
+Content-Length: 10075
+Connection: close
+Cache-Control: no-cache
+Server: adf_http_server/4.3.0205
+
+...JSON...
+</code></pre>
+
+</div>
