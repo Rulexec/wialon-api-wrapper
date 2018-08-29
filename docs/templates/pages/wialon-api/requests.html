@@ -2,7 +2,7 @@
 
 <h1 class="ui dividing header">Формат запросов Wialon API</h1>
 
-<h2 class="ui header">ajax.html</h2>
+<h2 class="ui header">/wialon/ajax.html</h2>
 
 <p>Практически всё взаимодействие с <b>Wialon API</b> происходит при помощи <b>HTTPS</b> endpoint'а <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/reqformat/reqformat">/wialon/ajax.html</a>.
 
@@ -18,7 +18,7 @@
 	<li><b>sid</b> — авторизационный идентификатор. Не обязателен для методов авторизации (<a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/token/login">token/login</a>, <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/use_auth_hash">core/use_auth_hash</a>, <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/duplicate">core/duplicate</a>)</li>
 </ul>
 
-<p>Пример запроса:</p>
+<h3 class="ui header">Пример запроса:</h3>
 
 <pre class='x-code-block'>
 POST <span class="highlight">/wialon/ajax.html</span> HTTP/1.1
@@ -47,5 +47,15 @@ Server: adf_http_server/4.3.0205
 <pre class='x-code-block'>{"authHash":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","operateAs":"","checkService":""}</pre>
 
 <p>Чтобы попробовать данный запрос нужен <b>authHash</b>, который можно получить <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/login/login">авторизовавшись</a> через <a href="https://hosting.wialon.com/login.html?response_type=hash">login.html</a>, а затем взять значение из URL-параметра <b>access_hash</b>.</p>
+
+<h2 class="ui header">/avl_evts</h2>
+
+<p><b>ajax.html</b> позволяет совершать запросы и получать результат их выполнения. Однако если вам нужно следить за изменением данных, нужно чтобы сервер имел возможность уведомить вас об этом. Для этого используется поллинг <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/requests/avl_evts">/avl_evts</a>.</p>
+
+<p>Он запрашивается методом <b>GET</b> с единственным обязательным параметром — <b>sid</b>.</p>
+
+<p>В ответ придёт JSON с серверным временем (unixtime в UTC+0) и массивом произошедших событий со времени последнего обращения к <b>avl_evts</b>.</p>
+
+<p>Данный запрос поддерживает только <b>short-polling</b>, т.е. если на момент выполнения запроса новых событий не было — сразу же вернётся пустой массив. Согласно <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/limits/limits">лимитам</a> допускается выполнение 10 таких запросов в 10 секунд. Т.е. желательно делать один запрос раз в две секунды.</p>
 
 </div>
