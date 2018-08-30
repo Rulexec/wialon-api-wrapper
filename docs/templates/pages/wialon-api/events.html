@@ -1,0 +1,27 @@
+<div class="x-page-content text">
+
+<h1 class="ui dividing header">События Wialon API</h1>
+
+<p>Технический механизм, как сервер <b>Wialon</b> уведомляет клиента о событиях описан в разделе <a href="http://localhost:5000/wialon-api/requests#avl_evts">Запросов</a>. А в этом разделе мы рассмотрим основные типы событий, которые <b>Wialon</b> может генерировать.</p>
+
+<h2 class="ui header">События объектов</h2>
+
+<p>Каждое событие имеет поле <b>i</b> с идентификатором <a href="http://localhost:5000/wialon-api/objects#item">Item'а</a>, относительно которого произошло данное событие.</p>
+
+<p style="color:red;">TODO</p>
+
+<h2 class="ui header">Специальные события</h2>
+
+<p>Если же поле <b>i</b> является отрицательным числом, т.е. не является идентификатором <a href="http://localhost:5000/wialon-api/objects#item">Item'а</a>, то будем называть его <b>специальным событием</b>.</p>
+
+<p><b>Wialon</b> на данный момент имеет пять таких событий:</p>
+
+<ul class="x-ul">
+	<li><p><b>-1</b> — уведомление окончания <a href="http://localhost:5000/wialon-api/requests#file_upload">загрузки файла</a>.</p></li>
+	<li><p><b>-2</b> — уведомление об инвалидной сессии.</p><p>На практике куча чаще обращение к <b>/avl_evts</b> возвращает <b class="x-code-inline">{ "error": 1 }</b> для обозначения того же.</p></li>
+	<li><p><b>-3</b> — изменение поля <b>features</b>, которое отдаётся при <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/login#response">логине</a>.</p><p>В нём содержатся доступные пользователю <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/account/get_account_data#services_list">сервисы</a>.</p></li>
+	<li><p><i><b>-4</b> — похоже что не используется, резервировалось для <a href="https://docs.wialon.com/en/hosting/cms/gui/dashboard">Dashboard'а</a>.</i></p></li>
+	<li><p><b>-5</b> — уведомление изменения полных прав доступа.</p><p>Генерируется в том случае, если пользователь не имел никаких прав на <a href="http://localhost:5000/wialon-api/objects#item">Item</a> и получил как минимум право на просмотр базовых свойств, либо наоборот, когда у него забрали все права на какой-либо <a href="http://localhost:5000/wialon-api/objects#item">Item</a> (но не удалили его, для этого есть отдельное уведомление <b style="color:red;">TODO</b>).</p></li>
+</ul>
+
+</div>

@@ -48,7 +48,9 @@ Server: adf_http_server/4.3.0205
 
 <p>Чтобы попробовать данный запрос нужен <b>authHash</b>, который можно получить <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/login/login">авторизовавшись</a> через <a href="https://hosting.wialon.com/login.html?response_type=hash">login.html</a>, а затем взять значение из URL-параметра <b>access_hash</b>.</p>
 
-<h2 class="ui header">/avl_evts</h2>
+<p id="file_upload" style="color:red;">TODO: загрузка файлов</p>
+
+<h2 id="avl_evts" class="ui header">/avl_evts</h2>
 
 <p><b>ajax.html</b> позволяет совершать запросы и получать результат их выполнения. Однако если вам нужно следить за изменением данных, нужно чтобы сервер имел возможность уведомить вас об этом. Для этого используется поллинг <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/requests/avl_evts">/avl_evts</a>.</p>
 
