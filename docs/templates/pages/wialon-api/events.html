@@ -4,9 +4,39 @@
 
 <p>Технический механизм, как сервер <b>Wialon</b> уведомляет клиента о событиях описан в разделе <a href="http://localhost:5000/wialon-api/requests#avl_evts">Запросов</a>. А в этом разделе мы рассмотрим основные типы событий, которые <b>Wialon</b> может генерировать.</p>
 
+<h2 class="ui header">Подписка на события</h2>
+
+<p>После создания новой сессии она не подписана ни на какие события, кроме специального события (описаны ниже) <b>-3</b>.</p>
+
+<p>Для того, чтобы получать необходимые события, требуется выполнить запрос <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/update_data_flags">core/update_data_flags</a> относительно всех <a href="http://localhost:5000/wialon-api/objects#item">Item'ов</a>, события которых интересуют.</p>
+
+<p>Данный запрос принимает битовую маску флагов полей, которые вас интересуют. Узнать, какой флаг у конкретного поля можно в разделе <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/format/format">Data format</a> документации <b>Wialon API</b>.</p>
+
+<p style="color:red;">TODO: упомянуть про нюанс с type: type, data: avl_units.</p>
+
 <h2 class="ui header">События объектов</h2>
 
 <p>Каждое событие имеет поле <b>i</b> с идентификатором <a href="http://localhost:5000/wialon-api/objects#item">Item'а</a>, относительно которого произошло данное событие.</p>
+
+<p>У <b>Item'ов</b> есть три типа событий (по параметру <b>t</b>):</p>
+
+<ul class="x-ul">
+	<li><b>u</b> — изменение поля.</li>
+	<li><b>m</b> — приход сообщения.</li>
+	<li><b>d</b> — уведомление удаления.</li>
+</ul>
+
+<h3 class="ui header">Изменение поля</h3>
+
+<p style="color:red;">TODO</p>
+
+<h3 class="ui header">Регистрация сообщения</h3>
+
+<p>Простое уведомление с данными зарегистрированного <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/format/messages">сообщения</a>. У объектов это позиционные сообщения, присланные фото, регистрация событий, заправок, прочее. У ресурсов, к примеру, онлайн-уведомления созданные <a href="https://docs.wialon.com/en/hosting/user/notify/notify">уведомлением</a>.</p>
+
+<p>Для получения событий этого типа требуется подписаться на флаг <b>0x20</b>.</p>
+
+<h3 class="ui header">Удаление</h3>
 
 <p style="color:red;">TODO</p>
 
@@ -21,7 +51,7 @@
 	<li><p><b>-2</b> — уведомление об инвалидной сессии.</p><p>На практике куча чаще обращение к <b>/avl_evts</b> возвращает <b class="x-code-inline">{ "error": 1 }</b> для обозначения того же.</p></li>
 	<li><p><b>-3</b> — изменение поля <b>features</b>, которое отдаётся при <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/login#response">логине</a>.</p><p>В нём содержатся доступные пользователю <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/account/get_account_data#services_list">сервисы</a>.</p></li>
 	<li><p><i><b>-4</b> — похоже что не используется, резервировалось для <a href="https://docs.wialon.com/en/hosting/cms/gui/dashboard">Dashboard'а</a>.</i></p></li>
-	<li><p><b>-5</b> — уведомление изменения полных прав доступа.</p><p>Генерируется в том случае, если пользователь не имел никаких прав на <a href="http://localhost:5000/wialon-api/objects#item">Item</a> и получил как минимум право на просмотр базовых свойств, либо наоборот, когда у него забрали все права на какой-либо <a href="http://localhost:5000/wialon-api/objects#item">Item</a> (но не удалили его, для этого есть отдельное уведомление <b style="color:red;">TODO</b>).</p></li>
+	<li><p><b>-5</b> — уведомление изменения полных прав доступа.</p><p>Генерируется в том случае, если пользователь не имел никаких прав на <a href="http://localhost:5000/wialon-api/objects#item">Item</a> и получил как минимум право на просмотр базовых свойств, либо наоборот, когда у него забрали все права на какой-либо <b>Item</b> (но не удалили его, для этого есть отдельное уведомление <b style="color:red;">TODO</b>).</p></li>
 </ul>
 
 </div>
