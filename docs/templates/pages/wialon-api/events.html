@@ -12,7 +12,9 @@
 
 <p>Данный запрос принимает битовую маску флагов полей, которые вас интересуют. Узнать, какой флаг у конкретного поля можно в разделе <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/format/format">Data format</a> документации <b>Wialon API</b>.</p>
 
-<p style="color:red;">TODO: упомянуть про нюанс с type: type, data: avl_units.</p>
+<p>Важный нюанс с <span class="x-code-inline">{ "type": "type", "data": "avl_unit" }</span> (<b>avl_unit</b> выбран для примера, актуально для любого типа): оно работает эквивалентно тому, будто бы вы получили список идентификаторов доступных вам объектов и передали их как <span class="x-code-inline">{ type: "col", "data": "1,2,3,4,5,..." }</span>.</p>
+
+<p>Т.е. если вы создадите объект, либо какой-то пользователь даст вам права на какой-либо объект, автоматически подписка на него не произойдёт. Для этого вам требуется отслеживать специальное событие <b>-5</b> и вручную подписываться на новые <b>Item'ы</b>.</p>
 
 <h2 class="ui header">События объектов</h2>
 
@@ -28,7 +30,11 @@
 
 <h3 class="ui header">Изменение поля</h3>
 
-<p style="color:red;">TODO</p>
+<p>В объекте данного события в поле <b>d</b> будет находится объект с ключами и новыми значениями полей, которые были изменены.</p>
+
+<p>В случае обычных полей значение в этом объекте будет новым значением поля. В случае же <a href="http://localhost:5000/wialon-api/objects#propitem">PropItem'ов</a> это будет массив из двух элементов: идентификатор изменённого <b>PropItem'а</b> и его базовый JSON.</p>
+
+<p>Удаление <b>PropItem'а</b> является так же <b>изменением поля</b>. В этом случае вторым значением в массиве изменений будет <span class="x-code-inline"><b>null</b></span>.</p>
 
 <h3 class="ui header">Регистрация сообщения</h3>
 
@@ -38,7 +44,9 @@
 
 <h3 class="ui header">Удаление</h3>
 
-<p style="color:red;">TODO</p>
+<p>Если <b>Item</b> был удалён, произойдёт данное событие.</p>
+
+<p>Важно не путать удаление <a href="http://localhost:5000/wialon-api/objects#propitem">PropItem'а</a> с данным, за удаление <b>PropItem'а</b> отвечает уведомление <b>изменения поля</b>.</p>
 
 <h2 class="ui header">Специальные события</h2>
 
@@ -51,7 +59,10 @@
 	<li><p><b>-2</b> — уведомление об инвалидной сессии.</p><p>На практике куча чаще обращение к <b>/avl_evts</b> возвращает <b class="x-code-inline">{ "error": 1 }</b> для обозначения того же.</p></li>
 	<li><p><b>-3</b> — изменение поля <b>features</b>, которое отдаётся при <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/login#response">логине</a>.</p><p>В нём содержатся доступные пользователю <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/account/get_account_data#services_list">сервисы</a>.</p></li>
 	<li><p><i><b>-4</b> — похоже что не используется, резервировалось для <a href="https://docs.wialon.com/en/hosting/cms/gui/dashboard">Dashboard'а</a>.</i></p></li>
-	<li><p><b>-5</b> — уведомление изменения полных прав доступа.</p><p>Генерируется в том случае, если пользователь не имел никаких прав на <a href="http://localhost:5000/wialon-api/objects#item">Item</a> и получил как минимум право на просмотр базовых свойств, либо наоборот, когда у него забрали все права на какой-либо <b>Item</b> (но не удалили его, для этого есть отдельное уведомление <b style="color:red;">TODO</b>).</p></li>
+	<li>
+		<p><b>-5</b> — уведомление изменения полных прав доступа.</p><p>Генерируется в том случае, если пользователь не имел никаких прав на <a href="http://localhost:5000/wialon-api/objects#item">Item</a> и получил как минимум право на просмотр базовых свойств, либо наоборот, когда у него забрали все права на какой-либо <b>Item</b> (но не обязательно удалили его, для этого есть отдельное уведомление, описанное выше).</p>
+		<p>Для получения данных событий требуется выполнить <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/update_data_flags">core/update_data_flags</a> с <span class="x-code-inline">{ "type": "access", "data": 1, "flags": 0, "mode": 0 }</span>.</p>
+	</li>
 </ul>
 
 </div>
