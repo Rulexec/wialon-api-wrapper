@@ -11,6 +11,7 @@ const DEBUG = !!process.env.DEBUG;
 
 let app = photon()
 	.use(photon.common())
+	.use(photon.cache())
 	.use(photon.path())
 	.use(function(req, res, next) {
 		console.log(req.path);
@@ -23,20 +24,23 @@ app.use(function(req, res) {
 });
 
 app.get('/favicon.ico', function(req, res) { res.status(404).end('404'); });
-app.get('/favicon.png', serveFileHandler(path.join(__dirname, 'assets/static/favicon.png')));
+app.get('/favicon.png', serveFileHandler({ cacheETag: !DEBUG && '1', filePath: path.join(__dirname, 'assets/static/favicon.png') }));
 
-app.get('/lib/less/less.min.js', serveFileHandler(path.join(__dirname, 'build/less/less.min.js')));
-app.get('/lib/semantic/semantic.min.css', serveFileHandler(path.join(__dirname, 'assets/build/semantic/dist/semantic.min.css')));
+app.get('/lib/less/less.min.js', serveFileHandler({ cacheETag: !DEBUG && 'forever', filePath: path.join(__dirname, 'build/less/less.min.js') }));
+app.get('/lib/semantic/semantic.min.css', serveFileHandler({
+	cacheETag: !DEBUG && 'forever',
+	filePath: path.join(__dirname, 'assets/build/semantic/dist/semantic.min.css')
+}));
 
 app.get(/\/static\/(.+)/, function(req, res, filePath) {
 	if (filePath.indexOf('..') >= 0) { res.status(400).end(); }
 
 	if (filePath === 'logo.svg') {
-		serveFile(path.join(__dirname, 'assets/static/favicon.svg'), req, res);
+		serveFile({ cacheETag: !DEBUG && '1', filePath: path.join(__dirname, 'assets/static/favicon.svg') }, req, res);
 		return;
 	}
 
-	serveFile(path.join(__dirname, 'static', filePath), req, res);
+	serveFile({ cacheETag: !DEBUG && '1', filePath: path.join(__dirname, 'static', filePath) }, req, res);
 });
 
 let templates = new Map();

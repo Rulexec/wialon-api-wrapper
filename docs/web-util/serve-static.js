@@ -3,13 +3,22 @@ const fs = require('fs');
 exports.serveFile = serveFile;
 
 function serveFile(options, req, res) {
-	if (typeof options !== 'string') { res.status(500).end('serveFile options is not a string'); return; }
+	if (typeof options === 'string') {
+		options = { filePath: options };
+	}
 
-	const path = options;
+	let { cacheETag, filePath } = options;
+
+	if (cacheETag) {
+		let isCached = res.endIfCached({ etag: cacheETag });
+		if (isCached) return;
+
+		res.cache({ etag: cacheETag });
+	}
 
 	let contentType = 'text/plain';
 
-	const match = /\.([a-z]+)$/.exec(path);
+	const match = /\.([a-z]+)$/.exec(filePath);
 	if (match) {
 		switch (match[1]) {
 		case 'html': contentType = 'text/html'; break;
@@ -18,9 +27,9 @@ function serveFile(options, req, res) {
 		}
 	}
 
-	res.setHeader('content-type', contentType);
+	res.setHeader('Content-Type', contentType);
 
-	fs.createReadStream(path).on('error', function() {
+	fs.createReadStream(filePath).on('error', function() {
 		res.status(500).end('File read error');
 	}).pipe(res);
 };
