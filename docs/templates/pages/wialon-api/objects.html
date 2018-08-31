@@ -51,6 +51,8 @@
 
 <p>Примером такого поля являются <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/format/resource#geofences">геозоны</a> у <b>ресурса</b>.</p>
 
+<p>Так же ими являются <b>произвольные поля</b>. <b>Произвольные параметры</b> ведут себя как <b>PropItem'ы</b>, но отличаются тем, что у них нет численных идентификаторов и <a href="/wialon-api/events#field-update">события их изменения выглядят как объект ключ-значение, а не массив из идентификатора и значения.</p>
+
 <p>У данных полей есть специальные методы для изменения конкретного элемента, создания нового. Так же у них иногда бывает метод для получения дополнительной информации, у геозон, к примеру, это <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/resource/get_zone_data">resource/get_zone_data</a>. Т.е. если сделать просто <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/search_items">core/search_items</a>, либо <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/core/update_data_flags">core/update_data_flags</a> с флагом геозон, будет возвращён неполный JSON геозон, там не будет площади/периметра, точек, и других значений, их необходимо получать отдельно.</p>
 
 <p>Кроме того, нет возможности изменить отдельное поле произвольного <b>PropItem'а</b>, требуется записывать весь JSON целиком.</p>
