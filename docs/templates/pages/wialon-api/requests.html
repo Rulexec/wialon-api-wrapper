@@ -29,7 +29,7 @@ Content-Length: 148
 
 svc=<span class="highlight">core/use_auth_hash</span>&amp;params=<span class="highlight secondary">%7B%22authHash%22%3A%22XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%22%2C%22operateAs%22%3A%22%22%2C%22checkService%22%3A%22%22%7D</span>
 
------
+<span class="irrelevant">===================================</span>
 
 HTTP/1.1 200 OK
 Date: Wed, 29 Aug 2018 15:44:32 GMT
@@ -48,7 +48,45 @@ Server: adf_http_server/4.3.0205
 
 <p>Чтобы попробовать данный запрос нужен <b>authHash</b>, который можно получить <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/login/login">авторизовавшись</a> через <a href="https://hosting.wialon.com/login.html?response_type=hash">login.html</a>, а затем взять значение из URL-параметра <b>access_hash</b>.</p>
 
-<p id="file_upload" style="color:red;">TODO: загрузка файлов</p>
+<h2 id="file_upload" class="ui header">Загрузка файлов</h2>
+
+<p><a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/file/put">Некоторые</a> <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/resource/upload_zone_image" class="x-underline">методы</a> <a href="https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/unit/update_hw_params">могут</a> принимать файлы в виде аргументов. Для этого используется <span class="x-code-inline">Content-Type: multipart/form-data</span>.</p>
+
+<p>Пример валидного запроса:</p>
+
+<pre class="x-code-block">
+POST /wialon/ajax.html?svc=<span class="highlight">exchange/import_messages</span>&sid=<span class="highlight secondary">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span> HTTP/1.1
+Host: hst-api.wialon.com
+Connection: close
+Content-Type: <span class='highlight'>multipart/form-data</span>; boundary=<span class="highlight secondary">-----WialonFormBoundary</span>
+Content-Length: 348
+
+<span class='highlight'>--</span><span class="highlight secondary">-----WialonFormBoundary</span>
+Content-Disposition: form-data; name="params"
+
+{"itemId":<span class='highlight'>15904200</span>,"eventHash":"importMessage1535444018829"}
+<span class='highlight'>--</span><span class="highlight secondary">-----WialonFormBoundary</span>
+Content-Disposition: form-data; name="file"; filename="file.wln"
+Content-Type: text/plain
+
+REG;2000000000;27.456872;53.905826;60;180;ALT:0.0;SATS:255;;;;
+<span class='highlight'>--</span><span class="highlight secondary">-----WialonFormBoundary</span>
+
+<span class="irrelevant">===================================</span>
+
+HTTP/1.1 200 OK
+Date: Sat, 01 Sep 2018 06:38:25 GMT
+Content-Length: 3
+Connection: close
+Cache-Control: no-cache
+Server: adf_http_server/4.3.0205
+
+{}
+</pre>
+
+<p>Конечно, предпочтительнее совершать подобные запросы при помощи HTTP-клиента в вашем языке программирования, либо библиотекой, поддерживающую <b>multipart/form-data</b>.</p>
+
+<p>Это исключит возможность неправильно вычислить <b>Content-Length</b>, забыть обязательные дополнительные <span class="x-code-inline">--</span> в разделителях в теле запроса, не допустить коллизии <b>boundary</b> с содержимым файла.</p>
 
 <h2 id="avl_evts" class="ui header">/avl_evts</h2>
 
