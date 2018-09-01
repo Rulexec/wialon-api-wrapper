@@ -34,6 +34,23 @@ function onLoad() {
 		window.location.hash = "";
 		window.location.hash = hash;
 	});
+
+	processForeignLinks();
+}
+function processForeignLinks() {
+	var links = document.querySelectorAll('a');
+
+	for (var i = 0; i < links.length; i++) {
+		var linkEl = links[i];
+
+		var href = linkEl.getAttribute('href');
+
+		var isForeignLink = /^http/i.test(href);
+
+		if (!isForeignLink) continue;
+
+		linkEl.setAttribute('target', '_blank');
+	}
 }
 function checkLoad() {
 	if (document.readyState === 'complete') onLoad();
