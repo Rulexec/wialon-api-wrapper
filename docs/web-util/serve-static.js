@@ -7,14 +7,26 @@ function serveFile(options, req, res) {
 		options = { filePath: options };
 	}
 
-	let { cacheETag, filePath } = options;
+	let { cacheETag, cacheMaxAge, cacheLastModified, filePath } = options;
+
+	let cacheSpec = null;
 
 	if (cacheETag) {
 		let isCached = res.endIfCached({ etag: cacheETag });
 		if (isCached) return;
 
-		res.cache({ etag: cacheETag });
+		cacheSpec = { etag: cacheETag };
 	}
+	if (cacheMaxAge) {
+		let isCached = res.endIfCached({ lastModified: cacheLastModified || 0 });
+		if (isCached) return;
+
+		if (!cacheSpec) cacheSpec = {};
+
+		cacheSpec.maxAge = cacheMaxAge;
+	}
+
+	if (cacheSpec) res.cache(cacheSpec);
 
 	let contentType = 'text/plain';
 

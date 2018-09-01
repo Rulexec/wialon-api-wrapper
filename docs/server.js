@@ -9,6 +9,9 @@ let _serveStatic = require('./web-util/serve-static.js'),
 
 const DEBUG = !!process.env.DEBUG;
 
+const CACHE_FOREVER_MAX_AGE = 31536000; // year
+const foreverCacheMaxAge = !DEBUG && CACHE_FOREVER_MAX_AGE;
+
 let app = photon()
 	.use(photon.common())
 	.use(photon.cache())
@@ -24,11 +27,15 @@ app.use(function(req, res) {
 });
 
 app.get('/favicon.ico', function(req, res) { res.status(404).end('404'); });
-app.get('/favicon.png', serveFileHandler({ cacheETag: !DEBUG && '1', filePath: path.join(__dirname, 'assets/static/favicon.png') }));
+app.get('/favicon.png', serveFileHandler({
+	cacheETag: !DEBUG && '1',
+	cacheMaxAge: 24 * 60 * 60, // 24 hours
+	filePath: path.join(__dirname, 'assets/static/favicon.png')
+}));
 
-app.get('/lib/less/less.min.js', serveFileHandler({ cacheETag: !DEBUG && 'forever', filePath: path.join(__dirname, 'build/less/less.min.js') }));
+app.get('/lib/less/less.min.js', serveFileHandler({ cacheMaxAge: foreverCacheMaxAge, filePath: path.join(__dirname, 'build/less/less.min.js') }));
 app.get('/lib/semantic/semantic.min.css', serveFileHandler({
-	cacheETag: !DEBUG && 'forever',
+	cacheMaxAge: foreverCacheMaxAge,
 	filePath: path.join(__dirname, 'assets/build/semantic/dist/semantic.min.css')
 }));
 
@@ -36,11 +43,19 @@ app.get(/\/static\/(.+)/, function(req, res, filePath) {
 	if (filePath.indexOf('..') >= 0) { res.status(400).end(); }
 
 	if (filePath === 'logo.svg') {
-		serveFile({ cacheETag: !DEBUG && '1', filePath: path.join(__dirname, 'assets/static/favicon.svg') }, req, res);
+		serveFile({
+			cacheETag: !DEBUG && '1',
+			cacheMaxAge: 24 * 60 * 60, // 24 hours
+			filePath: path.join(__dirname, 'assets/static/favicon.svg')
+		}, req, res);
 		return;
 	}
 
-	serveFile({ cacheETag: !DEBUG && '1', filePath: path.join(__dirname, 'static', filePath) }, req, res);
+	serveFile({
+		cacheETag: !DEBUG && '1',
+		cacheMaxAge: 10 * 60, // 10 minutes
+		filePath: path.join(__dirname, 'static', filePath)
+	}, req, res);
 });
 
 let templates = new Map();
