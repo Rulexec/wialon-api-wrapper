@@ -15,6 +15,29 @@
 if (window.history.replaceState && /^[^/]+:\/\/[^/]+\/?$/.test(document.location.href)) {
 	window.history.replaceState(null, '', '/what-is-it');
 }
+var isLoaded = false;
+if (document.readyState === 'complete') {
+	onLoad();
+} else {
+	document.addEventListener('readystatechange', checkLoad);
+	document.addEventListener('DOMContentLoaded', checkLoad);
+}
+
+function onLoad() {
+	if (isLoaded) return;
+	isLoaded = true;
+
+	less.pageLoadFinished.then(function() {
+		// Trigger browser scroll to #id
+
+		var hash = window.location.hash;
+		window.location.hash = "";
+		window.location.hash = hash;
+	});
+}
+function checkLoad() {
+	if (document.readyState === 'complete') onLoad();
+}
 	</script>
 </head>
 
