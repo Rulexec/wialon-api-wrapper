@@ -34,7 +34,7 @@ app.get('/favicon.png', serveFileHandler({
 }));
 
 app.get('/lib/less/less.min.js', serveFileHandler({ cacheMaxAge: foreverCacheMaxAge, filePath: path.join(__dirname, 'build/less/less.min.js') }));
-app.get('/lib/semantic/semantic.min.css', serveFileHandler({
+app.get('/lib/semantic/semantic.1.min.css', serveFileHandler({
 	cacheMaxAge: foreverCacheMaxAge,
 	filePath: path.join(__dirname, 'assets/build/semantic/dist/semantic.min.css')
 }));
