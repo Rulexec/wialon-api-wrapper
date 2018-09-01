@@ -13,7 +13,7 @@ module.exports = function() {
 
             if (lastModified && ifModifiedSince &&
                     new Date(ifModifiedSince) - lastModified >= -1000 ||
-                etag && ifNoneMatch && etag === ifNoneMatch)
+                etag && ifNoneMatch && ('W/' + etag === ifNoneMatch))
             {
                 return true;
             } else {
@@ -29,7 +29,7 @@ module.exports = function() {
 
             if (!res.getHeader('Date')) res.setHeader('Date', new Date().toUTCString());
 
-            if (etag && !res.getHeader('ETag')) res.setHeader('ETag', etag);
+            if (etag && !res.getHeader('ETag')) res.setHeader('ETag', 'W/' + etag);
             if (!res.getHeader('Cache-Control')) {
                 if (maxAge) {
                     var cacheControl = mode + ', max-age=' + maxAge.toString();
