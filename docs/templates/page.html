@@ -1,68 +1,16 @@
 <!doctype html>
 <html>
 <head>
-	<meta charset='utf-8'>
-	<title>Wialon API Wrapper Project</title>
-
-	<link rel='icon' type='image/png' href='/favicon.png'>
-
-	<link rel='stylesheet' type='text/css' href='/lib/semantic/semantic.1.min.css'>
-
-	<link rel='stylesheet/less' type='text/css' href='/static/index.less'>
-	<script src='/lib/less/less.min.js'></script>
-
-	<script>
-if (window.history.replaceState && /^[^/]+:\/\/[^/]+\/?$/.test(document.location.href)) {
-	window.history.replaceState(null, '', '/what-is-it');
-}
-var isLoaded = false;
-if (document.readyState === 'complete') {
-	onLoad();
-} else {
-	document.addEventListener('readystatechange', checkLoad);
-	document.addEventListener('DOMContentLoaded', checkLoad);
-}
-
-function onLoad() {
-	if (isLoaded) return;
-	isLoaded = true;
-
-	less.pageLoadFinished.then(function() {
-		// Trigger browser scroll to #id
-
-		var hash = window.location.hash;
-		window.location.hash = "";
-		window.location.hash = hash;
-	});
-
-	processForeignLinks();
-}
-function processForeignLinks() {
-	var links = document.querySelectorAll('a');
-
-	for (var i = 0; i < links.length; i++) {
-		var linkEl = links[i];
-
-		var href = linkEl.getAttribute('href');
-
-		var isForeignLink = /^http/i.test(href);
-
-		if (!isForeignLink) continue;
-
-		linkEl.setAttribute('target', '_blank');
-	}
-}
-function checkLoad() {
-	if (document.readyState === 'complete') onLoad();
-}
-	</script>
+{PAGEHEADER}
+	{TITLE "Wialon API Wrapper Project"}
+{/PAGEHEADER}
 </head>
 
 <body>
 
 <div class='x-menu ui vertical inverted menu'>
 	<div class='item menu-header-item'>
-		<img src='/static/logo.svg'><b>API Wrapper</b>
+		<div class="logo-container"><img src='/static/logo.svg'><b>API Wrapper</b></div>
 	</div>
 
 	<a class='item {active if page what-is-it}' href='{href from if page}'><b>Что это?</b></a>
@@ -83,7 +31,7 @@ function checkLoad() {
 
 	<a {not implemented yet} class='item {active if page examples}' href='{href from if page}'><b>Примеры</b></a>
 
-	<div class='item'><s><b>Reference</b></s></div>
+	<a class='item' href="/reference/"><b>Reference</b></a>
 </div>
 
 <div class='x-root'>

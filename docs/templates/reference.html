@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+{PAGEHEADER}
+	{TITLE "Reference | Wrapper API"}
+{/PAGEHEADER}
+</head>
+
+<body>
+
+<div class="x-menu ui vertical inverted menu">
+	<div class="item menu-header-item">
+		<a href="/" class="logo-container"><img src="/static/logo.svg"><b>API Wrapper</b></a>
+	</div>
+
+	<div class="item"><div class="header">Authorization</div><div class="menu">
+		<a class="item {active if page auth/wialon/sid}" href="{href from if page}">/{text from if page}</a>
+		<a {not implemented yet} class="item {active if page auth/wialon/hash}" href="{href from if page}">/{text from if page}</a>
+		<a {not implemented yet} class="item {active if page auth/wialon/token}" href="{href from if page}">/{text from if page}</a>
+	</div></div>
+</div>
+
+<div class="x-root">
+	<div class="menu"></div>
+	<div class="content">{CONTENT}</div>
+</div>
+
+</body>
+</html>

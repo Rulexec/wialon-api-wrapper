@@ -64,62 +64,131 @@ if (!DEBUG) {
 	 'wialon-api/objects', 'wialon-api/requests', 'wialon-api/events',
 	 'wrapper-api/objects', 'wrapper-api/requests', 'wrapper-api/events'
 	].forEach(function(name) {
-		readTemplate(name, 'pages/' + name + '.html');
+		readAndSaveTemplate(name, 'pages/' + name + '.html');
 	});
 
-	readTemplate('page.html', 'page.html');
+	readAndSaveTemplate('page.html', 'page.html');
+	readAndSaveTemplate('page-header.html', 'page-header.html');
+	readAndSaveTemplate('reference.html', 'reference.html');
 }
-function readTemplate(name, filePath) {
+function readAndSaveTemplate(name, filePath) {
 	let template = fs.readFileSync(path.join(__dirname, 'templates', filePath)).toString('utf-8');
 
 	templates.set(name, template);
+}
+function readTemplate(filePath) {
+	return fs.readFileSync(path.join(__dirname, 'templates', filePath)).toString('utf-8');
 }
 
 function readPageTemplate() {
 	return fs.readFileSync(path.join(__dirname, 'templates/page.html')).toString('utf-8');
 }
+function readPageHeaderTemplate() {
+	return fs.readFileSync(path.join(__dirname, 'templates/page-header.html')).toString('utf-8');
+}
 
-let pageTemplate = templates.get('page.html');
+let pageTemplate = templates.get('page.html'),
+    pageHeaderTemplate = templates.get('page-header.html'),
+    referencePageTemplate = templates.get('reference.html');
 
 let builtPagesCache = new Map();
 
-app.get(/^\/(.*)$/, function(req, res, pageSlug) {
-	if (!pageSlug) pageSlug = 'what-is-it';
+registerRelativePageHandler({
+	prefix: 'reference',
+	defaultSlug: 'auth/wialon/sid',
+	getPageTemplate: DEBUG ? () => readTemplate('reference.html') : () => referencePageTemplate
+});
+registerRelativePageHandler({
+	defaultSlug: 'what-is-it',
+	getPageTemplate: DEBUG ? () => readTemplate('page.html') : () => pageTemplate
+});
 
-	if (!DEBUG) {
-		let cached = builtPagesCache.get(pageSlug);
-		if (cached) {
-			res.end(cached);
+function registerRelativePageHandler(options) {
+	let {prefix, getPageTemplate, defaultSlug} = options || {};
+
+	if (prefix) prefix += '/';
+	else if (typeof prefix !== '') prefix = '';
+
+	let urlRegexp = new RegExp('^/' + prefix + '(.*)$');
+
+	app.get(urlRegexp, function(req, res, pageSlug) {
+		if (!pageSlug) pageSlug = defaultSlug;
+
+		if (!DEBUG) {
+			let cached = builtPagesCache.get(pageSlug);
+			if (cached) {
+				res.end(cached);
+				return;
+			}
+		}
+
+		let pageTemplateHtml = getPageTemplate();
+
+		let result = renderPage({
+			prefix, pageSlug, pageTemplateHtml
+		});
+
+		if (result.error) {
+			res.status(404).header('Content-Type', 'text/plain').end('404 - ' + (DEBUG ? 'DEBUG - ' : '') + prefix + pageSlug);
 			return;
 		}
-	}
+
+		let html = result.html;
+
+		if (!DEBUG) {
+			builtPagesCache.set(prefix + pageSlug, html);
+		}
+
+		res.end(html);
+	});
+}
+
+function renderPage(options) {
+	let {
+		prefix,
+		pageSlug,
+		pageTemplateHtml
+	} = options;
 
 	// check for page existance
-	let pageContentHtml = templates.get(pageSlug);
+	let pageContentHtml = templates.get(prefix + pageSlug);
 	if (DEBUG) {
 		try {
 			pageContentHtml = fs.readFileSync(
-				path.join(__dirname, 'templates/pages', pageSlug + '.html')
+				path.join(__dirname, 'templates/pages', prefix + pageSlug + '.html')
 			).toString('utf-8');
 		} catch (e) {
-			res.status(404).header('Content-Type', 'text/plain').end('404 - DEBUG - ' + pageSlug);
-			return;
+			return { error: e, html: null };
 		}
 	}
 
 	if (!pageContentHtml) {
-		res.status(404).header('Content-Type', 'text/plain').end('404 - ' + pageSlug);
-		return;
+		return { error: 'noPageContentHtml', html: null };
 	}
 
-	let pageTemplateHtml = pageTemplate;
-	if (DEBUG) pageTemplateHtml = readPageTemplate();
+	let pageHeaderTemplateHtml = pageHeaderTemplate;
+	if (DEBUG) pageHeaderTemplateHtml = readPageHeaderTemplate();
+
+	// get title from page template
+	let pageHeaderRegexp = /{PAGEHEADER}[^]*{TITLE "(.*)"}[^]*{\/PAGEHEADER}/;
+
+	let html = pageTemplateHtml.replace(pageHeaderRegexp, function(full, title) {
+		let titleRegexp = /{TITLE}/g;
+
+		return pageHeaderTemplateHtml.replace(titleRegexp, title);
+	});
 
 	// process menu items
-	let activeItemRegexp = /\s*{active if page (.+)}([^>]*?){href from if page}/g;
+	let activeItemRegexp = /\s*{active if page (.+)}([^>]*?){href from if page}(([^>]*?)>([^<]*?){text from if page})?/g;
 
-	let html = pageTemplateHtml.replace(activeItemRegexp, function(full, slug, space) {
-		return (slug === pageSlug ? ' active' : '') + space + ('/' + slug);
+	html = html.replace(activeItemRegexp, function(full, slug, space, fullOptional, preTagEnd, postTagText) {
+		let result = (slug === pageSlug ? ' active' : '') + space + ('/' + prefix + slug);
+
+		if (fullOptional) {
+			result += preTagEnd + '>' + postTagText + slug;
+		}
+
+		return result;
 	});
 
 	// temporary disabled menu items
@@ -131,11 +200,10 @@ app.get(/^\/(.*)$/, function(req, res, pageSlug) {
 
 	html = html.replace('{CONTENT}', pageContentHtml);
 
-	if (!DEBUG) {
-		builtPagesCache.set(pageSlug, html);
-	}
-
-	res.end(html);
-});
+	return {
+		error: null,
+		html
+	};
+}
 
 app.listen(process.env.PORT || 5000);
