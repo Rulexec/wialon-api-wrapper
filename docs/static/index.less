@@ -1,3 +1,7 @@
+table {
+	border-spacing: 0;
+}
+
 @menu-width: 210px;
 
 .x-root {
@@ -64,6 +68,10 @@
 		.irrelevant {
 			color: gray;
 		}
+
+		.x-warning {
+			color: red;
+		}
 	}
 }
 
@@ -115,4 +123,58 @@ a.x-underline {
 	padding: 0 0.5em;
 
 	white-space: nowrap;
+}
+
+.x-reference-label {
+	display: inline-block;
+
+	background: #c3c3c3;
+	padding: 0.25em 0.5em;
+	border-radius: 0.25em;
+	color: white;
+
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.x-parameters-table {
+	width: 100%;
+
+	border: 1px solid #e2e2e2;
+
+	> tbody > tr {
+		&:not(:last-child) {
+			> td {
+				border-bottom: 1px solid #e2e2e2;
+			}
+		}
+
+		> td {
+			padding: 5px 10px;
+
+			&:not(:last-child) {
+				border-right: 1px solid #e2e2e2;
+			}
+
+			&.shrink {
+				width: 1px;
+				white-space: nowrap;
+			}
+
+			&.name {
+				font-family: monospace;
+
+				> span.opt {
+					font-size: 0.7em;
+					vertical-align: sub;
+					font-style: italic;
+					color: #a9a9a9;
+				}
+			}
+			&.type {
+				font-family: monospace;
+				color: #d85e5e;
+			}
+		}
+	}
 }
